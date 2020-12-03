@@ -1,7 +1,7 @@
 import java.io.File
 
 fun main() {
-    var list = readFileLineByLineUsingForEachLine("test.txt")
+    var list = readFileLineByLineUsingForEachLine("src\\main\\resources\\Day1\\input.txt")
     list.sort();
     processListTwoEntries(list)
     processListThreeEntries(list)
@@ -25,13 +25,11 @@ fun processListThreeEntries(list: ArrayList<Int>) {
 fun processListTwoEntries(list: ArrayList<Int>) {
     for (i in 0 until list.size) {
         for (j in i + 1 until list.size) {
-
             val a = list[i]
             val b = list[j]
             if (a + b == 2020) {
                 println("a+b=$a+$b where a*b is ${a * b}")
             }
-
         }
     }
 }
