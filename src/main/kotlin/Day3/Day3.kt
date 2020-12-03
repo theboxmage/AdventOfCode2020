@@ -7,36 +7,37 @@ import kotlin.collections.ArrayList
 class Day2 {
 
 }
-val DX = intArrayOf(1, 3, 5, 7, 1);
-val DY = intArrayOf(1, 1, 1, 1, 2);
+
+
 fun main()
 {
     var list = readFileLineByLineUsingForEachLine("src\\main\\resources\\Day3\\input.txt");
     //println(list[0]);
-    var resultList = ArrayList<Int>();
-    for(i in DX.indices) {
-        var x = 0;
-        var y = 0;
-        var count = 0;
-        while (y < list.size) {
-            //println(list[y][x])
-            if (list[y][x] == "#") {
-                count++;
-            }
-            x = (x + DX[i]) % (list[x].size);
-            y = (y + DY[i]);
-            //println("$y ${list.size}")
-        }
-        resultList.add(count)
-        println(count);
-    }
-    var current: Double = resultList[0].toDouble()
-    for(i in 1 until resultList.size)
-    {
-        current *= resultList[i]
-    }
+    var current: Double = runSlope(list, 1, 1);
+    current *= runSlope(list, 3, 1);
+    current *= runSlope(list, 5, 1);
+    current *= runSlope(list, 7, 1);
+    current *= runSlope(list, 1, 2);
+
     println("Final product: ${current.toBigDecimal().toPlainString()}")
 }
+
+fun runSlope(list: ArrayList<ArrayList<String>>, dx: Int, dy: Int): Double {
+    var x = 0;
+    var y = 0;
+    var count = 0;
+    while (y < list.size) {
+        if (list[y][x] == "#") {
+            count++;
+        }
+        x = (x + dx) % (list[x].size);
+        y = (y + dy);
+    }
+    println("With Slope dx:$dx dy:$dy you hit $count trees")
+    return count.toDouble();
+}
+
+
 fun readFileLineByLineUsingForEachLine(fileName: String): ArrayList<ArrayList<String>> {
     var list = ArrayList<ArrayList<String>>()
     File(fileName).forEachLine {
