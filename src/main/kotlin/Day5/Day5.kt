@@ -33,7 +33,7 @@ fun processString(input: String, lowerBound: Int, upperBound: Int): Int {
     var upperCount = upperBound
     for(char in input)
     {
-        if(char == "B"[0] || char == "R"[0])
+        if(char in listOf('B', 'R'))
         {
             lowerCount = 1+((upperCount + lowerCount) / 2)
         } else {
