@@ -9,7 +9,6 @@ fun main()
 {
     val list = readFile("src\\main\\resources\\Day5\\input.txt")
     val idList = ArrayList<Int>()
-    var maxId = -1
     for( i in list)
     {
         val row = processString(i.take(7), 0, 127)
@@ -17,10 +16,6 @@ fun main()
         val id = row * 8 + column
         idList.add(id)
         println("ID = $id for row $row and column $column")
-        if(id > maxId)
-        {
-            maxId = id
-        }
     }
     idList.sort()
     println("Max ID is: ${idList[idList.size-1]}")
