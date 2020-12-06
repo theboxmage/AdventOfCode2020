@@ -2,28 +2,23 @@ package Day6
 
 import java.io.File
 
-class Day6 {
-}
-
 fun main()
 {
     val list = readFile("src\\main\\resources\\Day6\\input.txt")
-    var count = 0;
+    var count = 0
     for(i in list)
     {
         count += i.size-1
     }
-    println("Part 1: $count");
-    count = 0;
+    println("Part 1: $count")
+    count = 0
     for(i in list)
     {
-        println(i);
-
         for(item in i.filter{(key, _) -> key != '#'})
         {
             if(item.value == i['#'])
             {
-                count++;
+                count++
             }
         }
     }
@@ -32,29 +27,28 @@ fun main()
 
 fun readFile(fileName: String): ArrayList<Map<Char, Int>> {
     val list = ArrayList<Map<Char, Int>>()
-    var group = mutableMapOf<Char, Int>();
-    group['#'] = 0;
+    var group = mutableMapOf<Char, Int>()
+    group['#'] = 0
     File(fileName).forEachLine {
         if(it == "")
         {
-            list.add(group);
-            group = mutableMapOf<Char, Int>();
-            group['#'] = 0;
+            list.add(group)
+            group = mutableMapOf()
+            group['#'] = 0
         }
         else {
-            val inputs = it.split("");
-            group['#'] = group['#']!!.plus(1);
+            group['#'] = group['#']!!.plus(1)
             for(character in it)
             {
                 if(group[character] == null)
                 {
-                    group[character] = 1;
+                    group[character] = 1
                 } else {
-                    group[character] = group[character]!! + 1;
+                    group[character] = group[character]!! + 1
                 }
             }
         }
     }
-    list.add(group);
+    list.add(group)
     return list
 }
