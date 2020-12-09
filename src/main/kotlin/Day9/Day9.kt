@@ -2,6 +2,8 @@ package Day9
 
 import java.io.File
 import java.math.BigInteger
+import java.util.*
+import kotlin.collections.ArrayList
 
 fun main() {
     val list = readFile("src\\main\\resources\\Day9\\input.txt")
@@ -9,7 +11,8 @@ fun main() {
     lookForSum(list, 25)
 }
 
-fun lookForSum(list: java.util.ArrayList<BigInteger>, queue: Int) {
+fun lookForSum(list: ArrayList<BigInteger>, queue: Int) {
+    var invalidEntry = (-1).toBigInteger()
     for (i in queue until list.size) {
         var flag = false
         for (x1 in i - queue until i) {
@@ -23,29 +26,23 @@ fun lookForSum(list: java.util.ArrayList<BigInteger>, queue: Int) {
             }
         }
         if (!flag) {
-            println("Part 1: ${list[i]}")
-            findBounds(list, list[i])
-        }
-    }
-}
-
-fun findBounds(list: ArrayList<BigInteger>, value: BigInteger) {
-    for (i in list.indices) {
-        val temp = ArrayList<BigInteger>()
-        var sum = 0.toBigInteger()
-        for (x in i until list.size) {
-            sum += list[x]
-            temp.add(list[x])
-            if (sum >= value) {
-                break
-            }
-        }
-        temp.sort()
-        if (sum == value) {
-            println("Part 2: ${temp[0] + temp[temp.size-1]} || ${temp[0]} and ${temp[temp.size-1]}")
+            invalidEntry = list[i]
             break
         }
     }
+    println("Part 1: $invalidEntry")
+    println("Part 2: ${findBounds(list, invalidEntry)}")
+}
+
+
+fun findBounds(list: ArrayList<BigInteger>, value: BigInteger): BigInteger {
+    val queue = ShortQueue(value)
+    for (i in list) {
+        if(queue.add(i)){
+            return queue.mixPlusMax()
+        }
+    }
+    return (-1).toBigInteger()
 }
 
 fun readFile(fileName: String): ArrayList<BigInteger> {
@@ -54,4 +51,42 @@ fun readFile(fileName: String): ArrayList<BigInteger> {
         list.add(it.toBigInteger())
     }
     return list
+}
+class ShortQueue(private var max: BigInteger)
+{
+    private val queue: Queue<BigInteger> = LinkedList()
+    private var sum: BigInteger = 0.toBigInteger()
+
+    fun add(input: BigInteger): Boolean
+    {
+        queue.add(input)
+        sum += input
+        while(sum > max)
+        {
+            sum -= queue.poll()
+        }
+        return sum == max && queue.size > 1
+    }
+
+    fun mixPlusMax(): BigInteger
+    {
+        var min = queue.peek()
+        var max = queue.peek()
+        for(i in queue)
+        {
+            if(i < min)
+            {
+                min = i
+            }
+            if(i > max)
+            {
+                max = i
+            }
+        }
+        return min + max
+    }
+
+    override fun toString(): String {
+        return "Max: $max : Sum: $sum : queue $queue"
+    }
 }
